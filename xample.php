@@ -37,20 +37,43 @@ if ( ! function_exists('add_action')) {
     echo 'Hey, you can\t access this file, you silly human!';
     die;
 }
-
+if ( !class_exists('XamplePlugin')) {
+require_once plugin_dir_path(__FILE__) . './external.php';
 class XamplePlugin {
     function __construct() {
         add_action('init', [ $this, 'custom_post_type']);
     }
-    function register() {
+    public function register() {
         add_action('admin_enqueue_scripts',[$this,'enqueue']);
+        add_action('admin_menu',[$this,'add_admin_pages']);
+    }
+    /**
+     * Undocumented function
+     *
+     * @return void
+     * @var icon_url Puede usar imagenes propias, me imagino que deben tener un tamano especifico, usando url o incluso un icono interno.
+     */
+    function add_admin_pages() {
+        $page_title = 'Xample Plugin';
+        $menu_title = 'Xample';
+        $capability = 'manage_options';
+        $menu_slug = 'xample_plugin';
+        $function = [$this,'admin_index'];
+        $icon_url = 'dashicons-superhero-alt';
+        $position = 110;
+        add_menu_page( $page_title, $menu_title, $capability, $menu_slug, [$this,'admin_index'] , $icon_url, $position );
+    }
+    private function admin_index() {
+        // require_once plugin_dir_path(__FILE__) . $includes_activate_plugin;
     }
     function activate() {
         $this->custom_post_type();
-        flush_rewrite_rules( );
+        require_once plugin_dir_path(__FILE__) . XampleExternal::includes_activate_plugin();
+        XampleActivatePlugin::activate();
     }
-    function desactivate() {
-        flush_rewrite_rules();
+    function deactivate() {
+        require_once plugin_dir_path(__FILE__) . XampleExternal::includes_deactivate_plugin();
+        XampleDeactivatePlugin::deactivate();
     }
     function uninstall() {
 
@@ -71,5 +94,12 @@ if ( class_exists('XamplePlugin')) {
     $xample_plugin->register();
 }
 
+/**
+* Activation
+*/
 register_activation_hook( __FILE__, [$xample_plugin, 'activate'] );
-register_deactivation_hook( __FILE__, [$xample_plugin, 'desactivate'] );
+/**
+* Deactivation
+*/
+register_deactivation_hook( __FILE__, [$xample_plugin, 'deactivate'] );
+}
