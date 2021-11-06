@@ -1,0 +1,23 @@
+{
+  "name": "",
+  "version": "0.1.0",
+  "main": "./src/index.js",
+  "keywords": [""],
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "",
+  "license": "",
+  "scripts": {
+    
+  },
+  "bugs": {
+    "url": "",
+    "email": ""
+  },
+  "homepage": ""
+}
