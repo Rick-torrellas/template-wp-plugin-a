@@ -1,0 +1,19 @@
+{
+    "name": "worf/xample",
+    "description": "xample plugin",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Includes\\": "./includes"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rick-torrellas",
+            "email": "75484605+Rick-torrellas@users.noreply.github.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

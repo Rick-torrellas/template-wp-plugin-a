@@ -3,8 +3,8 @@
 /**
 * @package xample
 */
-
-class XampleActivatePlugin {
+namespace includes;
+class ActivatePlugin {
     public static function activate() {
         flush_rewrite_rules();
     }

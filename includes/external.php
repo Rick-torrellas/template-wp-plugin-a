@@ -3,7 +3,7 @@
 /**
 * @package xample
 */
-
+namespace includes;
 defined('ABSPATH') or die('Hey, you can\t access this file, you silly human!');
 
 if ( ! function_exists('add_action')) {
@@ -11,7 +11,7 @@ if ( ! function_exists('add_action')) {
     die;
 }
 if ( !class_exists('XamplePlugin')) {
-class XampleExternal {
+class External {
     static $includes = 'includes';
     static $templates = 'templates';
     /* 
@@ -26,5 +26,8 @@ class XampleExternal {
     /* 
     * TEMPLATES
     */
+    static function templates_admin() {
+        return self::$templates . '/admin.php';
+    }
 }
 }

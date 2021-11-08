@@ -37,43 +37,53 @@ if ( ! function_exists('add_action')) {
     echo 'Hey, you can\t access this file, you silly human!';
     die;
 }
+$autoload = dirname(__FILE__) . '/vendor/autoload.php';
+if ( file_exists($autoload)) {
+    require_once $autoload;
+}
+use includes\ActivatePlugin;
+use includes\DeactivatePlugin;
+use includes\External;
 if ( !class_exists('XamplePlugin')) {
 require_once plugin_dir_path(__FILE__) . './external.php';
 class XamplePlugin {
+    public $plugin_name;
+    public $admin_page;
     function __construct() {
-        add_action('init', [ $this, 'custom_post_type']);
+        $this->plugin_name = plugin_basename(__FILE__);
+        $this->admin_page = 'xample_plugin';
     }
     public function register() {
+        add_action('init', [ $this, 'custom_post_type']);
         add_action('admin_enqueue_scripts',[$this,'enqueue']);
         add_action('admin_menu',[$this,'add_admin_pages']);
+        add_filter("plugin_action_links_$this->plugin_name",[$this,'setting_links']);
     }
-    /**
-     * Undocumented function
-     *
-     * @return void
-     * @var icon_url Puede usar imagenes propias, me imagino que deben tener un tamano especifico, usando url o incluso un icono interno.
-     */
+    function setting_links($links) {
+        $href = "admin.php?page=$this->admin_page";
+        $settings_link = "<a href='$href'>Configuracion</a>";
+        array_push($links,$settings_link);
+        return $links;
+    }
     function add_admin_pages() {
         $page_title = 'Xample Plugin';
         $menu_title = 'Xample';
         $capability = 'manage_options';
-        $menu_slug = 'xample_plugin';
+        $menu_slug = $this->admin_page;
         $function = [$this,'admin_index'];
         $icon_url = 'dashicons-superhero-alt';
         $position = 110;
-        add_menu_page( $page_title, $menu_title, $capability, $menu_slug, [$this,'admin_index'] , $icon_url, $position );
+        add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function , $icon_url, $position );
     }
-    private function admin_index() {
-        // require_once plugin_dir_path(__FILE__) . $includes_activate_plugin;
+    function admin_index() {
+        require_once plugin_dir_path(__FILE__) . External::templates_admin();
     }
     function activate() {
         $this->custom_post_type();
-        require_once plugin_dir_path(__FILE__) . XampleExternal::includes_activate_plugin();
-        XampleActivatePlugin::activate();
+        ActivatePlugin::activate();
     }
     function deactivate() {
-        require_once plugin_dir_path(__FILE__) . XampleExternal::includes_deactivate_plugin();
-        XampleDeactivatePlugin::deactivate();
+        DeactivatePlugin::deactivate();
     }
     function uninstall() {
 
