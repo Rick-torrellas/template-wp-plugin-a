@@ -6,8 +6,6 @@
 * Description: Plugin de ejemplo para aprender.
 */
 
-use includes\External;
-
 /*
 
 MIT License
@@ -39,7 +37,6 @@ if ( ! function_exists('add_action')) {
     echo 'Hey, you can\t access this file, you silly human!';
     die;
 }
-define('PLUGIN_NAME', plugin_basename(__FILE__));
 $autoload = dirname(__FILE__) . '/vendor/autoload.php';
 $external = dirname(__FILE__) . '/Globals.php';
 if ( file_exists($autoload)) {
@@ -49,12 +46,8 @@ if (file_exists($external)) {
     require_once $external;
 }
 use includes\Init;
-use home\Globals;
 use includes\base\ActivatePlugin;
 use includes\base\DeactivatePlugin;
-if (class_exists('home\\Globals')) {
-    Globals::register();
-}
 function xample_activate_plugin() {
     if (class_exists('includes\\base\\ActivatePlugin')) {
         ActivatePlugin::activate();

@@ -15,6 +15,8 @@
 
 [menu](#kanbas)
 
+* La clase globlas transformarla en un trait, y intentar guardar todo en funciones, a ver si las funciones pueden guardar otras funciones, y asi usarlo en otras clases.
+
 ## DOING
 
 [menu](#kanbas)

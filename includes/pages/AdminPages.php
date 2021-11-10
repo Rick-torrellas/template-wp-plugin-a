@@ -4,22 +4,39 @@
 * @package xample
 */
 namespace includes\pages;
+use \includes\Globals;
+use \includes\api\SettingsApi;
 class AdminPages
 {
+    public $settings;
+    public $pages = [];
+    public $subPages = [];
+    public function __construct()
+    {
+        $this->pages = [
+            [
+        'page_title' => 'Xample Plugin',
+        'menu_title' => 'Xample',
+        'capability' => 'manage_options',
+        'menu_slug' => Globals::admin_page(),
+        'callback' => function() {require_once Globals::plugin_path() . 'templates/admin.php';},
+        'icon_url' => 'dashicons-superhero-alt',
+        'position' => 110
+            ]
+            ];
+        $this->subPages = [
+            ['parent_slug'=> Globals::admin_page(),
+            'page_title' => 'Custom Post Types',
+            'menu_title' => 'CPT',
+            'capability' => 'manage_options',
+            'menu_slug' => 'xample_cpt',
+            'callback' => function() {require_once Globals::plugin_path() . 'templates/test.php';}
+            ]
+        ];
+        $this->settings = new SettingsApi();
+    }
     function register() {
-        add_action('admin_menu',[$this,'add_admin_pages']);
+        //FIXME: el withSubPages no sirve deberia mostrar el Dashboard. en el primer elemento de los subPages, en vez de eso muestra el nombre del menu padre.
+        $this->settings->addPages($this->pages)->withSubPages( 'Dashboard' )->addSubPages($this->subPages)->register();
     } 
-    function add_admin_pages() {
-        $page_title = 'Xample Plugin';
-        $menu_title = 'Xample';
-        $capability = 'manage_options';
-        $menu_slug = ADMIN_PAGE;
-        $function = [$this,'admin_index'];
-        $icon_url = 'dashicons-superhero-alt';
-        $position = 110;
-        add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function , $icon_url, $position );
-    }
-    function admin_index() {
-        require_once PLUGIN_PATH . 'templates/admin.php';
-    }
 }
