@@ -27,6 +27,15 @@ class Globals {
     public static function plugin_name() {
         return plugin_basename(dirname(__FILE__,2)) . '/'. self::plugin_file_name();
     }
+    
+    public static function customfields_xample() {
+        return [
+            "option_group" => "xample_options_group",
+            "option_name" => "xample_example",
+            "id" => "xample_admin_index",
+            "page" => self::admin_page()
+        ];
+    }
     public static function plugin_info() {
         //TODO: mostrar todas los valores de todas las funciones, no se si usar un string, o un array, creo que tiene mas logica un string.
     }
